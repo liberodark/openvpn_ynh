@@ -33,13 +33,13 @@ us_file="/etc/openvpn/users_settings.csv"
     
     # Link to ipv4 if needed
     public_ip4=$(get_ip 3)
-    if [ -n "$public_ip4" ]; then
-        $SUDO iptables -t nat -A PREROUTING -d $public_ip4 -j DNAT --to-destination $private_ip4
-        $SUDO iptables -t nat -A POSTROUTING -s ${private_ip4}/32 ! -d ${private_ip4}/32 -j SNAT --to-source $public_ip4
-    else
+ #   if [ -n "$public_ip4" ]; then
+ #       $SUDO iptables -t nat -A PREROUTING -d $public_ip4 -j DNAT --to-destination $private_ip4
+ #       $SUDO iptables -t nat -A POSTROUTING -s ${private_ip4}/32 ! -d ${private_ip4}/32 -j SNAT --to-source $public_ip4
+ #  else
         iface=$(ip r|awk '/default/ { print $5 }')
         $SUDO iptables -t nat -A POSTROUTING -s $private_ip4 -o "${iface}" -j MASQUERADE
-    fi
+ #   fi
 }
  
  
